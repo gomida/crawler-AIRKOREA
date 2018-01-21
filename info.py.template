@@ -1,0 +1,7 @@
+info = {}
+info['host'] = '127.0.0.1'
+info['user'] = 'id'
+info['password'] = 'password'
+info['database'] = 'dbname'
+info['serviceKey'] = 'KEY'
+info['stationName'] = '광교동'
