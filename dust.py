@@ -6,6 +6,7 @@ import requests
 import urllib
 
 def airkorea(stationName, cursor):
+	# DB QUERY
 	cursor.execute("SELECT timestamp FROM air_dust WHERE station LIKE '%s' ORDER BY timestamp DESC LIMIT 100" % (stationName))
 	db_rows = cursor.fetchall()
 
@@ -44,7 +45,6 @@ def airkorea(stationName, cursor):
 			cursor.execute("INSERT INTO air_dust(timestamp, station, pm10_0, pm02_5) VALUES (%s, %s, %s, %s)", (measure_stamp, stationName, pm10_0, pm02_5))
 
 
-# DB QUERY
 connection = db.connect(host=info['host'], user=info['user'], password=info['password'], database=info['database'])
 cursor = connection.cursor()
 
