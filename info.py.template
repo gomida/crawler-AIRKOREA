@@ -4,4 +4,4 @@ info['user'] = 'id'
 info['password'] = 'password'
 info['database'] = 'dbname'
 info['serviceKey'] = 'KEY'
-info['stationName'] = '광교동'
+info['stationName'] = ['광교동']
