@@ -2,14 +2,31 @@ from info import info
 from bs4 import BeautifulSoup
 import mysql.connector as db
 import datetime
+import time
 import requests
 import urllib
 
+tm = time.time()
+tz = datetime.timezone(datetime.timedelta(hours=9))
+ts = datetime.datetime.fromtimestamp(tm, tz)
+ts_str = ts.strftime('%Y-%m-%d %H:00:00')
+
 def airkorea(stationName, cursor):
 	# DB QUERY
-	cursor.execute("SELECT timestamp FROM air_dust WHERE station LIKE '%s' ORDER BY timestamp DESC LIMIT 100" % (stationName))
+	cursor.execute("SELECT timestamp FROM air_dust WHERE station LIKE '%s' ORDER BY timestamp DESC LIMIT 24" % (stationName))
 	db_rows = cursor.fetchall()
 
+	# DB CHECK	
+	if cursor.rowcount > 0:
+		for db_row in db_rows:
+			if str(db_row[0]) == ts_str:
+				print("dup")
+				return
+		pt = (ts - datetime.timedelta(minutes=80)).replace(tzinfo=None)
+		if pt < db_rows[0][0]:
+			print("no need to query")
+			return
+	
 	# WEB QUERY
 	web_query = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?serviceKey="\
 					+ info['serviceKey']\
